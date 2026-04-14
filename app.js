@@ -4,7 +4,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
 const app = express();
-const finesRoutes = require('./fines/finesRoutes');
+
 
 function checkAuthenticated(req, res, next) {
     if (req.session && req.session.user) return next();
@@ -27,11 +27,11 @@ const upload = multer({ storage: storage });
 
 // Use connection pool (NOT single connection)
 const pool = mysql.createPool({
-    host: 'ozitwa.h.filess.io',
+    host: '784jfr.h.filess.io',
     port: 3307,
-    user: 'CA2library_fallennor',
-    password: '377ad025e1933d3d05d3ee6580696b0f225b1daf',
-    database: 'CA2library_fallennor',
+    user: 'librarydb_balloonlog',
+    password: '3605010e25f53b766dd825672dda6054d248d3c9',
+    database: 'librarydb_balloonlog',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -97,7 +97,7 @@ const checkAdmin = (req, res, next) => {
   res.redirect('/library');
 };
 
-app.use('/fines', checkAuthenticated, finesRoutes);
+
 
 //  Form validation 
 const validateRegistration = (req, res, next) => {

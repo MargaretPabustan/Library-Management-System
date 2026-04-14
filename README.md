@@ -85,13 +85,7 @@ CREATE TABLE users (
   role ENUM('user', 'admin') DEFAULT 'user'
 );
 
--- Fines Table (optional)
-CREATE TABLE fines (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT,
-  amount DECIMAL(10,2),
-  reason TEXT
-);
+
 
 
 library-app/
@@ -106,7 +100,6 @@ library-app/
 │   ├── book.ejs
 │   ├── cart.ejs
 │   ├── checkout-success.ejs
-│   ├── fines.ejs
 │   ├── forgot-password.ejs
 │   ├── forgot-success.ejs
 │   ├── homepage.ejs
@@ -128,13 +121,14 @@ library-app/
 2. Set up MySQL , Create a database (e.g., librarydb)
 Run the SQL statements above to create books and publishers tables
 
-3. Configure DB pool in app.js
+3. Configure DB pool in app.js (Updated, Created a new Database to showcase in portfolio)
+// Use connection pool (NOT single connection)
 const pool = mysql.createPool({
-    host: 'ozitwa.h.filess.io',
+    host: '784jfr.h.filess.io',
     port: 3307,
-    user: 'CA2library_fallennor',
-    password: '377ad025e1933d3d05d3ee6580696b0f225b1daf',
-    database: 'CA2library_fallennor',
+    user: 'librarydb_balloonlog',
+    password: '3605010e25f53b766dd825672dda6054d248d3c9',
+    database: 'librarydb_balloonlog',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -175,7 +169,6 @@ POST	/publishers/add	Submit publisher form
 }
 
 
-📄 License
-This project is for educational use only and not for commercial deployment.
+
 
 
