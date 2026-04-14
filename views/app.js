@@ -4,7 +4,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
 const app = express();
-const finesRoutes = require('./fines/finesRoutes');
+
 
 function checkAuthenticated(req, res, next) {
     if (req.session && req.session.user) return next();
@@ -83,7 +83,7 @@ app.get('/', checkAuthenticated, (req, res) => {
             console.error("DB Error:", err);
             return res.status(500).send("Server error");
         }
-        res.render('fines', { fines: results });
+      
     });
 });
 
@@ -97,7 +97,7 @@ const checkAdmin = (req, res, next) => {
   res.redirect('/library');
 };
 
-app.use('/fines', checkAuthenticated, finesRoutes);
+
 
 //  Form validation 
 const validateRegistration = (req, res, next) => {
