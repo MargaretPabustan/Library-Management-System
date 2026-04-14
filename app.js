@@ -83,7 +83,6 @@ app.get('/', checkAuthenticated, (req, res) => {
             console.error("DB Error:", err);
             return res.status(500).send("Server error");
         }
-        res.render('fines', { fines: results });
     });
 });
 
@@ -143,7 +142,7 @@ app.post('/register', validateRegistration, (req, res) => {
   pool.query(checkEmailSQL, [email], (err, results) => {
     if (err) {
       console.error('Email check error:', err);
-      req.flash('error', 'Database error during email check.');
+      req.flash('error', 'System busy during email check');
       req.flash('formData', req.body);
       return res.redirect('/register');
     }
@@ -160,7 +159,7 @@ app.post('/register', validateRegistration, (req, res) => {
     pool.query(insertSQL, [username, email, password, contact, role], (err, result) => {
       if (err) {
         console.error('Registration error:', err);
-        req.flash('error', 'Database error during registration.');
+        req.flash('error', 'System busy during registration.');
         req.flash('formData', req.body);
         return res.redirect('/register');
       }
@@ -191,7 +190,7 @@ app.post('/login', (req, res) => {
   pool.query(sql, [email, password], (err, results) => {
     if (err) {
       console.error('Login error:', err);
-      req.flash('error', 'Database error');
+      req.flash('error', 'System busy');
       return res.redirect('/login');
     }
 
