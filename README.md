@@ -219,11 +219,20 @@ npx nodemon app.js
 - Live: (Render deployment link here)
 
 ## 🚀 Live Demo
-- 🔗 https://your-app-link.com
+-  https://library-management-system-6-ixpj.onrender.com
   - Login credentials (demo):
   - Admin: admin6@gmail.com / margaret
   - User: user@email.com / user1234
+> ⚠️ Note: The Render demo may load slowly or spin on first request due to free-tier hosting cold starts. Once loaded, all modules (including Publisher CRUD + RBAC integration) function correctly.
 
+
+## 🖥️ Local Setup
+For faster testing, you can run the app locally:
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Configure MySQL database (see schema section)
+4. Run the app: `npx nodemon app.js`
+5. Open in browser: http://localhost:3000
 
 ---
 
@@ -232,7 +241,7 @@ npx nodemon app.js
 Role | Permissions
 -----|-------------
 Admin | Full access to books, users, publishers
-User  | Can view books/publishers/loans pages, search items, borrow books, and update own profile
+User  | Can view books/publishers/loans pages, search items, borrow and return books, and update own profile
 
 ---
 
