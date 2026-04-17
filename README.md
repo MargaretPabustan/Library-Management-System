@@ -85,7 +85,7 @@ Developed full CRUD functionality for the publisher module, including search cap
 - Integrated role-based access control (admin-only actions such as edit and delete)
 - Implemented frontend permission checks using EJS conditional rendering
 
-All publisher-related logic is handled within a single Express route file. While not separated into a full MVC structure, the code is organised into clear sections for CRUD operations, search functionality, and access control to maintain readability and structure.
+All publisher-related logic is handled within a single Express route file. The project does not follow an MVC or layered architecture; instead, routing, business logic, and database queries are implemented directly within the same file (app.js). This approach was chosen for simplicity and faster development during the project timeline.
 
 
 - **Loan Page - Samuel**
