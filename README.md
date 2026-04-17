@@ -7,7 +7,7 @@ A full-stack Library Management Web App designed for administrators and users to
 ## ✨ Key Features
 
 ### 🧾 Book Management
-- List all books with title, author, year, and cover image
+- View all books with title, author, year, and cover image
 - Add new books with image upload
 - Edit book details and image
 - Delete books
@@ -27,8 +27,7 @@ A full-stack Library Management Web App designed for administrators and users to
 - Checkout simulation with success page
 - Cart clears after confirmation
 
-### 💰 Fines Module
-- View overdue fines (manually or automatically managed)
+
 
 ### 👥 User Profile
 - Profile viewing and editing
@@ -38,9 +37,84 @@ A full-stack Library Management Web App designed for administrators and users to
 - Manage users, books, and publishers
 - Access extra admin-only functionality
 
+
+
+
+## 🏗️ System Architecture
+
+Client (Browser / EJS Views)  
+↓  
+Express.js (Route Handlers + Business Logic)  
+↓  
+MySQL Database  
+
+This project is a **monolithic Express.js application** using server-side rendering with EJS.
+
+### How the system works:
+- EJS handles UI rendering on the server side
+- Express route handlers manage both routing and business logic
+- Authentication and authorization are implemented using Express middleware functions (checkAuthentication and checkAdmin)
+- Session-based storage is used to manage login state and user roles (RBAC).  
+- MySQL is used for persistent data storage.
+
+### Key Design Characteristics:
+- No separate controller/service layers (logic is handled directly in route handlers)
+- Middleware functions are defined within the main application file (not modularized)
+- RBAC is implemented using session-based role checks in both Express routes and EJS conditional rendering (`req.session.user.role`)
+- Fully server-rendered application using EJS (no frontend SPA framework)
+
 ---
 
-## ⚙️ Tech Stack
+
+
+
+## 👥 Team Contributions & System Scope
+This CA2 project was developed collaboratively, with each member responsible for different modules.
+
+### 📚 Module Ownership
+
+- **Books Page - Sahana**
+Implemented full CRUD operations for books including image upload, search bar functionality and stock handling (availability)
+
+## 📚 Publisher Page - Margaret (Me)
+
+Developed full CRUD functionality for the publisher module, including search capability.
+
+- Create, view, update, and delete publishers
+- Search publishers by relevant fields (Name, Address, Country)
+- Integrated role-based access control (admin-only actions such as edit and delete)
+- Implemented frontend permission checks using EJS conditional rendering
+
+All publisher-related logic is handled within a single Express route file. While not separated into a full MVC structure, the code is organised into clear sections for CRUD operations, search functionality, and access control to maintain readability and structure.
+
+
+- **Loan Page - Samuel**
+Implemented borrowing workflow including:
+- View borrowed records functionality
+- Return functionality (fully working)
+- Additional CRUD (Add/Update Loans) were partially implemented
+ 
+- **User Authentication & Access Control – Yi Xi (collaborative module)**  
+Collaborated on the application’s role-based access control system by implementing frontend-level permission for my publisher page rendering using EJS.
+
+Yi Xi focused on the User module and role management using session data. I contributed by implementing RBAC within the Publisher module to restrict admin-only actions (edit/delete/add) using session-based checks and EJS conditional rendering.
+
+### Publisher Module RBAC Implementation (publishers.ejs)
+<% if (user && user.role === 'admin') { %>
+  <th>Edit</th>
+  <th>Delete</th>
+<% } %>
+
+  <% if (user && user.role === 'admin') { %>
+            <td>
+              <a href="/updatePublisher/<%= publisher.publisher_id %>" class="btn btn-outline-primary btn-sm">Edit</a>
+            </td>
+            <td>
+              <a href="/deletePublisher/<%= publisher.publisher_id %>" 
+                 onclick="return confirm('Are you sure you want to delete this publisher?')" 
+                 class="btn btn-outline-danger btn-sm">Delete</a>
+            </td>
+          <% } %>
 
 | Layer       | Technology                     |
 |-------------|---------------------------------|
@@ -85,8 +159,7 @@ CREATE TABLE users (
   role ENUM('user', 'admin') DEFAULT 'user'
 );
 
-
-
+-- Project Structure
 
 library-app/
 ├── app.js                  # Main Express app
@@ -115,60 +188,98 @@ library-app/
 ├── routes/
 │   └── library.js          # (Assumed) routes for books and publishers
 
----
-1. Install dependencies: npm install
+## 🚀 Installation Process
 
-2. Set up MySQL , Create a database (e.g., librarydb)
-Run the SQL statements above to create books and publishers tables
+1. Install dependencies:
+npm install
+npm init -y 
 
-3. Configure DB pool in app.js (Updated, Created a new Database to showcase in portfolio)
-// Use connection pool (NOT single connection)
+2. Set up MySQL database:
+Create a database (e.g. librarydb)
+Run the provided SQL scripts to create tables (books, publishers, users)
+
+3. Configure DB pool in app.js (Updated: new database created for portfolio demonstration purposes, as the DB used for the project has expired)
+
 const pool = mysql.createPool({
     host: '784jfr.h.filess.io',
     port: 3307,
     user: 'librarydb_balloonlog',
-    password: '3605010e25f53b766dd825672dda6054d248d3c9',
+    password: 'YOUR_PASSWORD_HERE',
     database: 'librarydb_balloonlog',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
-4. Run the application
+
+4. Run the application:
 npx nodemon app.js
 
-Access at: http://localhost:3000
+5. Open in browser:
+- Locally: http://localhost:3000 
+- Live: (Render deployment link here)
 
-🔐 User Roles
-Role	Permissions
-Admin	Full access to books, users, publishers
-User	Can view, borrow, and update own profile only
+## 🚀 Live Demo
+- 🔗 https://your-app-link.com
+  - Login credentials (demo):
+  - Admin: admin6@gmail.com / margaret
+  - User: user@email.com / user1234
+
+
+---
+
+## 🔐 User Roles
+
+Role | Permissions
+-----|-------------
+Admin | Full access to books, users, publishers
+User  | Can view books/publishers/loans pages, search items, borrow books, and update own profile
 
 ---
 
-🧪 Sample Routes
-Method	Route	Description
-GET	/library	View all books
-GET	/library/add	Add a new book
-POST	/library/add	Submit book form
-GET	/library/edit/:id	Edit existing book
-POST	/library/edit/:id	Submit edit form
-POST	/library/delete/:id	Delete a book
-GET	/publishers	View publishers
-GET	/publishers/add	Add a publisher
-POST	/publishers/add	Submit publisher form
+## 🧪 Sample Routes
+
+Method | Route | Description
+------|-------|-------------
+GET | /library | View all books
+GET | /library/add | Add a new book
+POST | /library/add | Submit book form
+GET | /library/edit/:id | Edit existing book
+POST | /library/edit/:id | Submit edit form
+POST | /library/delete/:id | Delete a book
+GET | /publishers | View publishers
+GET | /publishers/add | Add a publisher
+POST | /publishers/add | Submit publisher form
 
 ---
-📦 Dependencies
+
+## 📦 Dependencies
 {
-  "express": "^4.18.2",
-  "ejs": "^3.1.9",
-  "mysql": "^2.18.1",
-  "multer": "^1.4.5",
-  "body-parser": "^1.20.2",
-  "nodemon": "^3.0.1"
+  "express": "^5.1.0",
+  "ejs": "^3.1.10",
+  "mysql2": "^3.14.2",
+  "express-session": "^1.18.2",
+  "multer": "^2.0.2",
+  "body-parser": "^2.2.0"
 }
 
+ ⚠️ Challenges & Solutions 
 
+--  Margaret's Reflection (below)
+1. Learning GitHub workflow
+Challenge: At the start, I was unfamiliar with GitHub basics such as committing, pushing, and navigating the repository. This slowed down collaboration.
 
+Solution: I practiced using Git commands (git add, git commit, git push) and learned to manage branches. By the end, I was confident in contributing and keeping my module synced with the team repo.
+
+2. Routing syntax and logic
+Challenge: Some Express routes failed due to incorrect syntax or misplaced logic.
+
+Solution: I debugged by carefully checking route definitions, middleware order, and testing endpoints with Postman. This ensured CRUD operations worked consistently.
+
+3. Module Integration
+Challenge: Integrating my Publisher module with teammates’ modules required aligning database schema and session data.
+
+Solution: We coordinated as a team to standardize schema fields and role checks. My module was successfully integrated with shared authentication  and RBAC logic through collaboration.
+
+**Shared Authentication** – Integrated Yi Xi's module with mine
 
 
