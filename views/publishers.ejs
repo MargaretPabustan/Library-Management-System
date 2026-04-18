@@ -98,6 +98,7 @@
         <th>Country</th>
         <th>Contact</th>
         <th>Image</th>
+      <!--RBAC - Ensures only admins can edit/delete publishers-->
         <% if (user && user.role === 'admin') { %>
           <th>Edit</th>
           <th>Delete</th>
