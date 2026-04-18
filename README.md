@@ -2,6 +2,7 @@
 
 A full-stack Library Management Web App designed for administrators and users to manage books and publishers. Built with **Node.js**, **Express**, **EJS**, **MySQL**, and **Bootstrap**, it supports full CRUD operations, user authentication, image uploads, a borrow cart, fines, and profile management.
 
+
 ---
 ### 📁 Project Structure
 library-1/
@@ -49,7 +50,7 @@ POST	/login	Login user
 - Delete books
 - Out-of-stock or unavailable message handling
 
-### 🏷️ Publisher Management
+### 🏷️ Publisher Management - Margaret (My Contribution)
 - Add, view, edit, and delete publishers
 - View publisher details for each book
 
@@ -124,7 +125,7 @@ This CA2 project was developed collaboratively, with each member responsible for
 
 Developed full CRUD functionality for the publisher module, including search capability.
 
-- Create, view, update, delete publishers
+- Create, view, update, delete publishers (/publishers, /addPublisher, /updatePublisher, /deletePublisher)
 - Search by name, address, country
 - Admin-only access control for edit/delete/add
 - Frontend RBAC using EJS conditional rendering

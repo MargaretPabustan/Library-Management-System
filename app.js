@@ -610,6 +610,8 @@ app.get('/checkout-success', (req, res) => {
   res.render('checkout-success'); // render the EJS file
 });
 
+//===================================
+//Publishers CRUD - Margaret's Part
 
 // publishers route ( GET method)
 app.get('/publishers', checkAuthenticated, (req, res) => {
@@ -632,9 +634,7 @@ app.get('/publishers', checkAuthenticated, (req, res) => {
     });
 });
 
-
-
-
+//Margaret's part - View publisher details
 app.get('/publishers/:id', checkAuthenticated, (req, res) => {
   const publisher_id = req.params.id;
 
@@ -655,13 +655,13 @@ app.get('/publishers/:id', checkAuthenticated, (req, res) => {
   });
 });
 
-
+//Margaret's part - Add publisher route ( GET method)
 app.get('/addPublisher', checkAuthenticated, checkAdmin, (req, res) => {
     res.render('addPublisher', { user: req.session.user });
 });
 
 
-// Add publisher route ( POST method)
+//Margaret's part - Add publisher route ( POST method)
 app.post('/addPublisher', upload.single('images'), (req, res) => {
     // Extract publisher data from the request body
     const { publisher_name, publisher_address, publisher_country, publisher_contact} = req.body;
@@ -685,8 +685,7 @@ app.post('/addPublisher', upload.single('images'), (req, res) => {
         }
     });
 });
-
-// Update publisher route ( GET method)
+//Margaret's part - Update publisher route ( GET method)
 app.get('/updatePublisher/:id', checkAuthenticated, checkAdmin,(req,res) => {
     const publisher_id = req.params.id;
     const sql = 'SELECT * FROM publishers WHERE publisher_id = ?'; 
@@ -707,7 +706,7 @@ app.get('/updatePublisher/:id', checkAuthenticated, checkAdmin,(req,res) => {
     });
 });
 
-// Update publisher route ( POST method)
+// Margaret's part - Update publisher route ( POST method)
 app.post('/updatePublisher/:id', upload.single('images'), (req, res) => {
     const publisher_id = req.params.id;
     const {publisher_name,publisher_address,publisher_country,publisher_contact} = req.body;
@@ -730,7 +729,7 @@ app.post('/updatePublisher/:id', upload.single('images'), (req, res) => {
     });
 });
 
-//Delete publisher route ( GET method)
+//Margaret's part - Delete publisher route ( GET method)
 app.get('/deletePublisher/:id', checkAuthenticated, checkAdmin, (req,res) => {
     const publisher_id = req.params.id;
     //Extract publisher data from the request body
@@ -749,7 +748,7 @@ app.get('/deletePublisher/:id', checkAuthenticated, checkAdmin, (req,res) => {
     });
 });
 
-// Return a book
+
 app.get('/loans/return/:id', checkAuthenticated, async (req, res) => {
   const loanId = req.params.id;
 
