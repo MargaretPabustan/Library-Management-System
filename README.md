@@ -119,7 +119,12 @@ This CA2 project was developed collaboratively, with each member responsible for
   - Image upload
   - Search + stock handling
 
----
+
+- **Login, Registration and Users Page + RBAC - Yi Xi**
+  - Full CRUD for users
+  - User registration and authentication
+  - Implemented RBAC methods such as checkAuthenticated and checkAdmin to verify whether user 
+  has logged in as well as user role
 
 ## 📚 Publisher Page – Margaret (Me)
 
@@ -128,7 +133,7 @@ Developed full CRUD functionality for the publisher module, including search cap
 - Create, view, update, delete publishers (/publishers, /addPublisher, /updatePublisher, /deletePublisher)
 - Search by name, address, country
 - Admin-only access control for edit/delete/add
-- Frontend RBAC using EJS conditional rendering
+
 
 All publisher logic is handled inside a single Express file (app.js).  
 No MVC structure was used; routes, logic, and database queries are all combined for simplicity.
@@ -139,16 +144,62 @@ Borrowing workflow
 Return functionality
 Loan tracking system
 
+## 🔹 Overview
+This system implements session-based authentication and role-based access control (RBAC).
 
-### 🧩 User Authentication & Access Control – Yi Xi (collaborative module)
+Yi Xi was responsible for developing the **User module**, which manages user accounts, authentication, and role assignment. This module provides the foundation for system-wide access control.
 
-- Worked on role-based access control system
-- Implemented session-based role management
-- Publisher module integrates RBAC using shared authentication system
+Sahana and I both integrated the existing RBAC system into our respective modules (Books and Publisher) by using session-based user roles to control access to sensitive operations.
 
-Margaret's Part (Collaboration with Yi Xi's module): Publisher RBAC example (EJS)
+This module supports system-wide access control by managing user authentication and role assignment, which is used to restrict create, update, and delete operations for publishers and books to admin users only.
+---
 
-## publishers.ejs##
+## 🔹 Margaret (My) Contribution – Publisher Module (Integration of Access Control)
+
+I was responsible for designing and implementing the Publisher Management module, which includes full CRUD (Create, Read, Update, Delete) functionality with database integration and server-side rendering using EJS.
+
+I integrated existing access control mechanisms into this module by applying backend middleware (checkAdmin) and session-based role checks to restrict create, update, and delete operations to admin users only.
+
+I also implemented conditional rendering in EJS to display edit and delete options only for admin users.
+
+
+--- 
+
+## Backend Implementation (Node.JS)
+```node.js
+
+app.get('/addPublisher', checkAuthenticated, checkAdmin, (req, res) => {
+    res.render('addPublisher', { user: req.session.user });
+});
+
+app.get('/updatePublisher/:id', checkAuthenticated, checkAdmin, (req, res) => {
+    const publisher_id = req.params.id;
+
+    pool.query('SELECT * FROM publishers WHERE publisher_id = ?', [publisher_id], (error, results) => {
+        if (error) return res.status(500).send('Error retrieving publisher');
+
+        if (results.length > 0) {
+            res.render('updatePublisher', { publishers: results[0] });
+        } else {
+            res.status(404).send('Publisher not found');
+        }
+    });
+});
+
+app.get('/deletePublisher/:id', checkAuthenticated, checkAdmin, (req, res) => {
+    const publisher_id = req.params.id;
+
+    pool.query('DELETE FROM publishers WHERE publisher_id = ?', [publisher_id], (error) => {
+        if (error) return res.status(500).send('Error deleting publisher');
+
+        res.redirect('/publishers');
+    });
+});
+
+
+## 🖥️ Frontend Implementation (EJS – Conditional Rendering)
+
+```ejs
 <% if (user && user.role === 'admin') { %>
   <th>Edit</th>
   <th>Delete</th>
@@ -161,11 +212,19 @@ Margaret's Part (Collaboration with Yi Xi's module): Publisher RBAC example (EJS
   <td>
     <a href="/deletePublisher/<%= publisher.publisher_id %>"
        onclick="return confirm('Are you sure?')"
-       class="btn btn-outline-danger btn-sm">Delete</a>
+       class="btn btn-outline-danger btn-sm">
+       Delete
+    </a>
   </td>
 <% } %>
 
+
+
+
+
+--
 ## Database Schema (Simplified)
+
 CREATE TABLE books (
   bookId INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255),
@@ -230,7 +289,6 @@ password: margaret
 ### User
 email: user@email.com
 password: user1234
-
 
 
 
