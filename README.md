@@ -279,7 +279,7 @@ const pool = mysql.createPool({
 
 
 ## 🌐 Live Demo
-- Link to Live Demo: https://library-management-system-6-ixpj.onrender.com
+- Link to Live Demo: https://library-management-system-demo-link.onrender.com/login
 
 ### Sample Credentials for Login
 ## Admin
