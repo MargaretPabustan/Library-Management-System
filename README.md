@@ -279,8 +279,7 @@ const pool = mysql.createPool({
 
 
 ## 🌐 Live Demo
-- Link to Live Demo: https://library-management-system-three-tawny.vercel.app/login
-
+- Link to Live Demo:  https://library-management-system-demo-link.onrender.com
 ### Sample Credentials for Login
 ## Admin
 email: admin6@gmail.com
